@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int logic(vector<int>& nums, int n,int i){
+        if(i == n-1) return nums[n-1];
+        int take = INT_MIN;
+        if(i < n-2) take = nums[i] + logic(nums,n,i+2);
+        int pass = 0 + logic(nums,n,i+1);
+        return max(take,pass);
+    }
+    int rob(vector<int>& nums) {
+        int n = nums.size();
+        // return logic(nums,n,0);
+        vector<int> dp(n,0);
+        dp[0] = nums[0];
+        // dp[1] = max(nums[0],nums[1]);
+        for(int i = 1;i<n;i++){
+            int take = nums[i];
+            if(i > 1) take = nums[i] + dp[i-2];
+            int pass = 0 + dp[i-1];
+            dp[i] = max(take,pass);
+        }
+        return dp[n-1];
+    }
+};
