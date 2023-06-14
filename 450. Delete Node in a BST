@@ -1,0 +1,39 @@
+class Solution {
+public: 
+    TreeNode* smallestOnRight(TreeNode* root){
+        if(root->left == NULL) return root;
+        return smallestOnRight(root->left);
+    }
+    // we are solving this problem as in that we have to delete root node by iterating to that root 
+    TreeNode* deleteNode(TreeNode* root, int key) {
+        if(!root) return NULL;
+        // no child
+        if(root->val == key){
+            if(root->left == NULL && root->right == NULL){
+                delete root;
+                return NULL;
+            }
+            // node to be deleted has only one child 
+            if(root->left == NULL && root->right != NULL){
+                TreeNode* temp = root->right;
+                delete root;
+                return temp;
+            }
+            if(root->right == NULL && root->left != NULL){
+                TreeNode* temp = root->left;
+                delete root;
+                return temp;
+            }
+            // if both left and right nodes are not null then we can replace the node with smallest node on right or largest node on left
+            if(root->left != NULL && root->right != NULL){
+                TreeNode* temp = smallestOnRight(root->right);
+                root->val = temp->val;
+                root->right = deleteNode(root->right,temp->val);
+            }
+        }
+        else {
+            if(root->val > key) root->left = deleteNode(root->left,key);
+            if(root->val < key) root->right = deleteNode(root->right,key);
+        }
+        return root;
+    }
