@@ -1,0 +1,12 @@
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(!root) return NULL; // if none of the nodes are present
+        if(root->val == p->val || root->val == q->val) return root; // if root is one of those two nodes return root
+        TreeNode* left = lowestCommonAncestor(root->left,p,q);
+        TreeNode* right = lowestCommonAncestor(root->right,p,q);
+        if(left == NULL) return right; // none of the nodes on left side so only check right side
+        if(right == NULL) return left; // none of the nodes on right side so only check left side
+        return root; // if both of the nodes are on different sides of each other
+    }
+};
