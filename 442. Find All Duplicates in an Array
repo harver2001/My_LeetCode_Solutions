@@ -1,0 +1,15 @@
+class Solution {
+public:
+    vector<int> findDuplicates(vector<int>& nums) {
+        vector<int> ans;
+        int n = nums.size();
+        int p = n;
+        for(int i = 0;i<n;i++){
+            int ind = abs(nums[i]) - 1;
+            if(nums[ind] < 0) ans.push_back(ind+1); // we are altering the sign everytime we go to an index pointed by nums[i]
+            // we only visit that index pointed ny nums[i] twice if it is repeating and since we already visited it the value of it is negative already
+            nums[ind] *= -1;
+        }
+        return ans;
+    }
+};
