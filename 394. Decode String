@@ -1,0 +1,27 @@
+class Solution {
+public:
+
+    string logic(string& s, int& i){ // &i is used (refernce) because we modify i at every recursion and we always need modified value
+        string ans = "";
+        while(i < s.size() && s[i] != ']'){
+            if(isdigit(s[i])){
+                int num = 0;
+                while(i < s.size() && isdigit(s[i])){
+                    num = num*10 + (s[i++] - '0');
+                }
+                i++; // jumping from index which points to '['
+                string next = logic(s,i);
+                while(num--) ans += next;
+                i++; // jumping from index which points to ']'
+            }
+            else ans += s[i++];
+        }
+        return ans;
+    }
+
+    string decodeString(string s) {
+        int i = 0;
+        return logic(s,i);
+    }
+
+};
