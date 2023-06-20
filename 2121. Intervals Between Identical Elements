@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector<long long> getDistances(vector<int>& arr) {
+        int n = arr.size();
+        vector<long long> ans(n,0);
+        map<long long int,vector<long long int>> mp;
+        map<long long int,vector<long long int>> preSum;
+        for(int i = 0;i<n;i++){
+            mp[arr[i]].push_back(i);
+            if(preSum[arr[i]].size() == 0) preSum[arr[i]].push_back(i);
+            else{
+                long long int size = preSum[arr[i]].size();
+                long long int p = preSum[arr[i]][size - 1];
+                preSum[arr[i]].push_back(i + p);
+            }
+        }
+        for(auto el : mp){
+            vector e = el.second;
+            long long int num = el.first;
+            long long int s = e.size();
+            long long temp = 0;
+            for(int i = 0;i<s;i++){
+                if(i == 0) ans[e[i]] = preSum[num][s-1] - (s*mp[num][i]);
+                else if(i == s-1) ans[e[i]] = (s*mp[num][i]) - preSum[num][s-1];
+                else{
+                    ans[e[i]] = ((i+1)*mp[num][i]) - preSum[num][i];
+                    ans[e[i]] += (preSum[num][s-1] - preSum[num][i]) - ((s-i-1)*mp[num][i]);
+                }
+            }
+        }
+        return ans;
+    }
+};
+
+// // mp[3].second -> 2   5   6
+//                    2   7   13
