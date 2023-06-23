@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int longestArithSeqLength(vector<int>& nums) {
+        int n = nums.size();
+        if(nums.size() <= 2) return n;
+        map<int,int> dp[n+1];
+        int ans = 0;
+        for(int i = 1;i<n;i++){
+            for(int j = 0;j<i;j++){
+                int count = 1;
+                int d = nums[i] - nums[j];
+
+                if(dp[j].count(d)) count = dp[j][d];
+                dp[i][d] = 1+count;
+                ans = max(ans,1+count);
+            }
+        }
+        return ans;
+    }
+};
