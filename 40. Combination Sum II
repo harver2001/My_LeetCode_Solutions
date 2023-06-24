@@ -1,0 +1,27 @@
+class Solution {
+public:
+    void logic(vector<int>& candidates, int ind, int target, int sum, vector<int>& temp, vector<vector<int>>& ans){
+        int n = candidates.size();
+        if(ind > n) return;
+        if(sum == target){
+            ans.push_back(temp);
+            return;
+        }
+        for(int i = ind;i<n;i++){
+            if(i != ind && candidates[i] == candidates[i-1]) continue;
+            if(candidates[i] + sum > target) break;
+            temp.push_back(candidates[i]);
+            logic(candidates,i+1,target,sum+candidates[i],temp,ans);
+            temp.pop_back();
+        }
+        return;
+    }
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        sort(candidates.begin(),candidates.end()); // so that we can avoid same set of elements
+        vector<int> temp;
+        vector<vector<int>> ans;
+        logic(candidates,0,target,0,temp,ans);
+        return ans;
+    }
+};
+
