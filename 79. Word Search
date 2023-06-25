@@ -1,0 +1,42 @@
+class Solution {
+public:
+    bool isValid(int m, int n, int r, int c){
+        if(r>=0 && r<m && c>=0 &&c<n) return true;
+        return false;
+    }
+    bool logic(vector<vector<char>>& board, string word, int ind, int r, int c, vector<vector<char>>& vis){
+        int s = word.size();
+        int n = board.size();
+        int m = board[0].size();
+        if(ind == s) return true;
+        int row[4] = {0,1,0,-1};
+        int col[4] = {1,0,-1,0};
+        bool ans = false;
+        for(int i = 0;i<4;i++){
+            int nr = r + row[i];
+            int nc = c + col[i];
+            if(isValid(n,m,nr,nc) && board[nr][nc] == word[ind] && vis[nr][nc] == 0){
+                vis[nr][nc] = 1;
+                ans |= logic(board,word,ind+1,nr,nc,vis);
+                vis[nr][nc] = 0;
+            }
+        }
+        return ans;
+    }
+    bool exist(vector<vector<char>>& board, string word) {
+        vector<vector<char>> vis(board.size(),vector<char> (board[0].size(),0));
+        bool ans = false;
+        int n = board.size();
+        int m = board[0].size();
+        for(int i = 0;i<n;i++){
+            for(int j = 0;j<m;j++){
+                if(vis[i][j] == 0 && board[i][j] == word[0]){
+                    vis[i][j] = 1;
+                    ans |= logic(board,word,1,i,j,vis);
+                    vis[i][j] = 0;
+                }
+            }
+        }
+        return ans;
+    }
+};
