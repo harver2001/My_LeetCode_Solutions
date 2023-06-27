@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int ans = 0;
+    void dfs(vector<vector<pair<int,int>>>& adj, int par, int node){
+        for(auto i : adj[node]){
+            int child = i.first;
+            int val = i.second;
+            if(child != par){ // since we have made bidirectional connections so whenever we have direction from parent to child we also have direction from child to parent
+                ans += val;
+                dfs(adj,node,child);
+            }
+        }
+    }
+    int minReorder(int n, vector<vector<int>>& connections) {
+        vector<vector<pair<int,int>>> adj(n);
+        for(auto i : connections){
+            adj[i[0]].push_back({i[1],1}); 
+            adj[i[1]].push_back({i[0],0}); // making connections bidirectional 
+        }
+        dfs(adj,-1,0);
+        return ans;
+    }
+};
