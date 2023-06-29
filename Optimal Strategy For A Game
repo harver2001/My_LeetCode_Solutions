@@ -1,0 +1,13 @@
+long long logic(int arr[], int n, int i, int j, long long val1, long long val2,vector<vector<int>>& dp){
+        if(i > j){
+            return 0;
+        }
+        if(dp[i][j] != -1) return dp[i][j];
+        int a = arr[i] + min(logic(arr,n,i+1,j-1,val1,val2,dp),logic(arr,n,i+2,j,val1,val2,dp));
+        int b = arr[j] + min(logic(arr,n,i+1,j-1,val1,val2,dp),logic(arr,n,i,j-2,val1,val2,dp)); // here both are playing optimally so when its other player's turn he will want us to give minimum thats why min is used from his chance to play
+        return dp[i][j] = max(a,b);
+    }
+    long long maximumAmount(int arr[], int n){
+        vector<vector<int>> dp(1010,vector<int> (1010,-1));
+        return logic(arr,n,0,n-1,0,0,dp);
+    }
