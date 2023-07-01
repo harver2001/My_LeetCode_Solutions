@@ -1,0 +1,19 @@
+int findPlatform(int arr[], int dep[], int n)
+    {
+    	int ans = 0;
+    	vector<pair<int,int>> v;
+    	for(int i = 0;i<n;i++){
+    	    v.push_back({arr[i],1});
+    	    v.push_back({dep[i]+1,-1}); // since on same time arrival of one train and departure of another train,we want to have 2 different
+          // stations for each arrival and departure we assume that the deaparting train is leaving a minute later
+    	}
+    	sort(v.begin(),v.end());
+    	int count = 0;
+    	auto prev = v[0];
+    	auto curr = v[0];
+    	for(int i = 0;i<v.size();i++){
+    	    count += v[i].second;
+    	    ans = max(ans,count);
+    	}
+    	return ans;
+    }
