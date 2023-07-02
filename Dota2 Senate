@@ -1,0 +1,22 @@
+class Solution {
+public:
+    string predictPartyVictory(string senate) {
+        int n = senate.size();
+        queue<int> r;
+        queue<int> d;
+        for(int i = 0;i<n;i++){
+            if(senate[i] == 'R') r.push(i);
+            else d.push(i);
+        }
+        while(r.size()!=0 && d.size()!=0){
+            int a = r.front();
+            int b = d.front();
+            d.pop();
+            r.pop();
+            if(a < b) r.push(a+n); // after an element that is on comparitively left side will ban other group member and then it wont be able to act till next loop i.e n (it will be a constant added every time we consider a loop to be done) 
+            else d.push(b+n);
+        }
+        if(r.size()!=0) return "Radiant";
+        return "Dire";
+    }
+};
