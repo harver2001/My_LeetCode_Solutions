@@ -1,0 +1,22 @@
+class Solution {
+public:
+    bool logic(vector<int>& stones,int ind,int k,map<int,int>& mp,vector<map<int,bool>>& dp){
+        int n = stones.size();
+        if(ind == n-1) return true;
+        if(dp[ind].find(k) != dp[ind].end()) return dp[ind][k];
+        bool a = false, b = false, c = false;
+        if(ind != 0 && mp.find(stones[ind]+k+1) != mp.end()) a = logic(stones,mp[stones[ind]+k+1],k+1,mp,dp);
+        if(mp.find(stones[ind]+k) != mp.end()) b = logic(stones,mp[stones[ind]+k],k,mp,dp);
+        if(k!=1 && mp.find(stones[ind]+k-1) != mp.end()) c = logic(stones,mp[stones[ind]+k-1],k-1,mp,dp);
+        return dp[ind][k] = a | b | c;
+    }
+    bool canCross(vector<int>& stones) {
+        int n = stones.size();
+        vector<map<int,bool>> dp(n+1);
+        map<int,int> mp;
+        for(int i = 0;i<n;i++){
+            mp[stones[i]] = i;
+        }
+        return logic(stones,0,1,mp,dp);
+    }
+};
