@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<vector<string>> ans;
+    bool isPalindrome(string str){
+        string temp = str;
+        reverse(temp.begin(),temp.end());
+        return str == temp;
+    }
+    void logic(string s, int ind, vector<string> vs){
+        int n = s.size();
+        if(ind == n){
+            ans.push_back(vs);
+            return;
+        }
+        for(int i = ind;i<n;i++){
+            if(isPalindrome(s.substr(ind,i - ind + 1))){
+                vs.push_back(s.substr(ind,i - ind + 1));
+                logic(s,i+1,vs);
+                vs.pop_back();
+            }
+        }
+    }
+    vector<vector<string>> partition(string s) {
+        vector<string> vs;
+        logic(s,0,vs);
+        return ans;
+    }
+};
