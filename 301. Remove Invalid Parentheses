@@ -1,0 +1,39 @@
+class Solution {
+public:
+int min_removals(string s){
+        stack<char> st;
+        int n = s.size();
+        for(int i = 0;i<n;i++){
+            if(s[i] == '(') st.push('(');
+            else if(s[i] == ')' && st.empty()) st.push(')');
+            else if(s[i] == ')' && !st.empty() && st.top() == '(') st.pop();
+            else if(s[i] == ')' && !st.empty() && st.top() == ')') st.push(')');
+        }
+        return st.size();
+    }
+    
+    void logic(string s, int ind, int removals, vector<string>& ans,unordered_map<string,int>& mp){
+        int n = s.size();
+        if(mp[s]) return;
+        mp[s] = 1;
+        if(removals == 0){
+            int size_check = min_removals(s);
+            if(size_check == 0) ans.push_back(s);
+            return;
+        }
+        for(int i = 0;i<n;i++){
+            //here we want to remove one singel charachter at one time in a single recursive call
+            string left = s.substr(0,i);
+            string right = s.substr(i+1);
+            string main = left + right;
+            logic(main,i+1,removals-1,ans,mp); // even if we remove an alphabet there will be no problem as we want minimum removals to be minRemovals and if we remove an alphabet then our final string will have a extra parantheses that will make it invalid do automatically those cases where we have removed one alphabet will not include in answer and get discared causing no problem.
+        }
+    }
+    vector<string> removeInvalidParentheses(string s) {
+        int minRemovals = min_removals(s); // in-order to get all strings of minimum size after removal
+        vector<string> res;
+        unordered_map<string,int> mp;
+        logic(s,0,minRemovals,res,mp);
+        return res; 
+    }
+};
