@@ -1,0 +1,34 @@
+// Here we will first reach the middle element of linked list (does'nt matter of even or odd sized) and reverse all nodes after middle element and keep comparing them with starting elements
+    
+    Node* reverseList(Node* head) {
+        if(!head) return NULL;
+        Node* curr = head;
+        Node* prev = NULL;
+        Node* next = head->next;
+        while(next != NULL){
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+            next = curr->next;
+        }
+        curr->next = prev;
+        return curr;
+    }
+    bool isPalindrome(Node *head)
+    {
+        Node* slow = head;
+        Node* fast = head;
+        while(fast->next != NULL && fast->next->next != NULL){
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        slow = slow->next;
+        slow = reverseList(slow);
+        Node* temp = head;
+        while(slow != NULL){
+            if(temp->data != slow->data) return false;
+            slow = slow->next;
+            temp = temp->next;
+        }
+        return true;
+    }
