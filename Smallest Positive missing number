@@ -1,0 +1,17 @@
+int missingNumber(int arr[], int n) 
+    { 
+        for(int i = 0;i<n;){
+            if(arr[i] > 0 && arr[i] <= n && arr[i] != arr[arr[i]-1]) swap(arr[i],arr[arr[i]-1]); // swapping till we dont get same value at both arr[i] and arr[arr[i]-1] or the value is out of range of 1 to n
+            else i++;
+        }
+        int ans = n + 1;
+        for(int i = 0;i<n;i++){
+            if(arr[i] != i+1){
+                ans = i+1;
+                break;
+            }
+        }
+        return ans;
+    }
+
+// example test case : 1, 3, 4, -20, 2
