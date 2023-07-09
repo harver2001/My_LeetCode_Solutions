@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int largestVariance(string s) {
+        int n = s.size();
+        vector<int> vis(26,0);
+        for(int i = 0;i<n;i++) vis[s[i]-'a']++;
+        map<char,int> mp;
+        int ans = 0;
+        for(int i = 0;i<26;i++){
+            for(int j = 0;j<26;j++){
+                if(i == j || vis[i] == 0 || vis[j] == 0) continue;
+                char a = i + 'a'; // considered minor occuring charachter
+                char b = j + 'a'; // considered major occuring charachter
+                int countA = 0;
+                int countB = 0;
+                int remCountA = vis[i];
+                
+                    for(int k = 0;k<n;k++){
+                        // Modified Kadane Algorithm as we need atleat one minor occuring element
+                        if(s[k] == b) countB++;
+                        if(s[k] == a){
+                            countA++;
+                            remCountA--; // keeping track that we still have minor occuring charachter for later use in string
+                        }
+                        if(countA > 0){
+                            ans = max(ans,countB - countA);
+                        }
+                        if(countA > countB && remCountA != 0){ // we cannot simply put count of minor = 0 because what if we dont have that minor occuring charachter later in the string and since it is nescessary to have atleast 1 minor occuring charachter
+                            countA = 0;
+                            countB = 0;
+                        }
+                    }
+                
+            }
+        }
+        return ans;
+    }
+};
