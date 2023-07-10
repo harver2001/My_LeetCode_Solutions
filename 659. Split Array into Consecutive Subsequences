@@ -1,0 +1,32 @@
+class Solution {
+public:
+    bool isPossible(vector<int>& nums) {
+        int n = nums.size();
+        map<int,int> mp,needed;
+        for(int i = 0;i<n;i++){
+            mp[nums[i]]++;
+        }
+        for(auto i : nums){
+            if(mp[i] == 0) continue;
+            // if there is a need of the current element in any subsequence
+            if(needed[i] > 0){
+                needed[i]--;
+                mp[i]--;
+                needed[i+1]++; // now we mark that the next number will be needed if presesnt in nums
+            }
+            //if the number is repeating or technically not needed then we form a new subsequence starting from that number
+            else{
+                // if we are forming a new subsequnce we need to ensure that always there are atleast 3 numbers in that subsequence
+                if(mp[i] && mp[i+1] && mp[i+2]){
+                    mp[i]--;
+                    mp[i+1]--;
+                    mp[i+2]--;
+                    needed[i+3]++; // we use this that if there is an element i+3 with no place to go it can come under this subsequnce
+                }
+                // if it is not possible to find atleat 3 consecutive elements then return false
+                else return false;
+            }
+        }
+        return true;
+    }
+};
