@@ -1,0 +1,20 @@
+void rearrange(long long *arr, int n) 
+    { 
+        // here we are trying to store two numbers in one index as (newNumber)*mul + oldNumber format
+    	int mini_ind = 0;
+    	int maxi_ind = n-1;
+    	int mul = 1e7+10;
+        for(int i = 0;i<n;i++){
+            if(i&1){
+                arr[i] = (arr[mini_ind]%mul)*mul + arr[i];
+                mini_ind++;
+            }
+            else{
+                arr[i] = (arr[maxi_ind]%mul)*mul + arr[i];
+                maxi_ind--;
+            }
+        }
+    	for(int i = 0;i<n;i++){
+    	    arr[i] /= mul;
+    	}
+    }
