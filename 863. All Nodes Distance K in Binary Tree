@@ -1,0 +1,44 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    unordered_map<TreeNode*,TreeNode*> adj;
+    unordered_map<TreeNode*,int> vis;
+    void preOrder(TreeNode* curr, TreeNode* par){
+        if(!curr) return;
+        adj[curr] = par;
+        preOrder(curr->left,curr);
+        preOrder(curr->right,curr);
+    }
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        preOrder(root,NULL);
+        queue<TreeNode*> q;
+        q.push(target);
+        vis[target] = 1;
+        while(!q.empty() && k--){
+            int size = q.size();
+            for(int i = 0;i<size;i++){
+                TreeNode* temp = q.front();
+                vis[temp] = 1;
+                q.pop();
+                if(temp->left && !vis.count(temp->left)) q.push(temp->left);
+                if(temp->right && !vis.count(temp->right)) q.push(temp->right);
+                if(adj[temp] && !vis.count(adj[temp])) q.push(adj[temp]);
+            }
+        }
+        // after k levels of all direction traversal
+        vector<int> ans;
+        while(!q.empty()){
+            ans.push_back(q.front()->val);
+            q.pop();
+        }
+        return ans;
+    }
+};
