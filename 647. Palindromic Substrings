@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int countSubstrings(string s) {
+        int n = s.size();
+        vector<vector<bool>> dp(n,vector<bool> (n,false));
+        int ans = 0;
+        // the max difference between starting and ending index can be n-1 (between 0 and n-1 indices)
+        for(int k = 0;k<n;k++){
+            // DIAGONAL TRAVERSAL -- Every diagonal will start at i = 0 and j = k(gap between starting and ending indices) and end at j = n-1
+            for(int i = 0,j = k;j<n; i++, j++){
+                if(k == 0){
+                    dp[i][j] = true; // k == 0 is single charachter with 0 gap between start and end indices which is always a palindrome
+                }
+                else if(k == 1){
+                    if(s[i] == s[j]) dp[i][j] = true;
+                    else dp[i][j] = false;
+                }
+                else{
+                    if(s[i] == s[j] && dp[i+1][j-1] == true) dp[i][j] = true; // if we have first and last charachters same then we check for innner string excluding those extreme charachters which is already evaluated in left bottom index (i+1,j-1)
+                    else dp[i][j] = false;
+                }
+                if(dp[i][j] == true) ans++;
+            }
+        }
+        return ans;
+    }
+};
