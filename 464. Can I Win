@@ -1,0 +1,20 @@
+class Solution {
+public:
+    bool logic(int num, int total, int k, vector<int>& dp){
+        if(total <= 0) return false; // jo bhi player yaha aega wo har chuka hoga kyuki total pichle player ne 0 ya usse kam bana dia h already
+        if(dp[k] != -1) return dp[k];
+        for(int i = 1;i<=num;i++){
+            if((k & (1<<i)) == 0){
+                if(logic(num, total - i, (k | (1<<i)),dp) == false) return dp[k] = true; // humko pehle player ke result se matlab h bas, matlab dusra player har jae(false) kaise bhi to pehla player jeet jaega -- basically ye line apne alawa dusre player ki calculation k liye h
+            }
+        }
+        return dp[k] = false;
+    }
+    bool canIWin(int maxChoosableInteger, int desiredTotal) {
+        if(maxChoosableInteger*(maxChoosableInteger+1)/2 < desiredTotal) return false;
+        if(maxChoosableInteger >= desiredTotal) return true;
+        int mask = 0;
+        vector<int> dp((1<<24),-1);
+        return logic(maxChoosableInteger,desiredTotal,mask,dp);
+    }
+};
