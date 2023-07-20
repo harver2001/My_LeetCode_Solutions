@@ -1,0 +1,18 @@
+    int logic(string a, string b, int i, int j,vector<vector<int>>& dp){
+        int n = a.size();
+        if(i >= n || j >= n) return 0;
+        int x = 0, y = 0, z = 0;
+        if(dp[i][j] != -1) return dp[i][j];
+        if(a[i] == b[j]){
+            return x = 1 + logic(a,b,i+1,j+1,dp);
+        }
+        y = logic(a,b,i+1,j,dp);
+        z = logic(a,b,i,j+1,dp);
+        return dp[i][j] = max(y,z);
+    }
+    int longestPalinSubseq(string A) {
+        vector<vector<int>> dp(A.size(),vector<int> (A.size(),-1));
+        string B = A;
+        reverse(B.begin(),B.end());
+        return logic(A,B,0,0,dp);
+    }
