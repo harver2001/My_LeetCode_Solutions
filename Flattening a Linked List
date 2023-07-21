@@ -1,0 +1,45 @@
+Node *merge(Node* a, Node* b){
+        if(a == NULL) return b;
+        if(b == NULL) return a;
+        Node* first = a;
+            Node* second = b;
+            Node* curr;
+            if(first->data > second->data){
+                curr = second;
+                second = second->bottom;
+            }
+            else{
+                curr = first;
+                first = first->bottom;
+            }
+            Node* res = curr;
+            while(first != NULL && second != NULL){
+                if(first->data > second->data){
+                    curr->bottom = second;
+                    second = second->bottom;
+                    curr = curr->bottom; 
+                }
+                else{
+                    curr->bottom = first; 
+                    first = first->bottom;
+                    curr = curr->bottom;
+                }
+            }
+            while(first){
+                curr->bottom = first; 
+                first = first->bottom;
+                curr = curr->bottom;
+            }
+            while(second){
+                curr->bottom = second; 
+                second = second->bottom;
+                curr = curr->bottom;
+            }
+            curr->bottom = NULL;
+        return res;
+    }
+    Node *flatten(Node *root)
+    {
+        if(root == NULL) return NULL;
+        return merge(root,flatten(root->next));
+    }
