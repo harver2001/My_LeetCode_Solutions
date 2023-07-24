@@ -1,0 +1,29 @@
+class Solution {
+public:
+    double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start_node, int end_node) {
+        unordered_map<int, vector<pair<int,double>>> adj(n);
+        for(int i = 0;i<edges.size();i++){
+            int u = edges[i][0];
+            int v = edges[i][1];
+            double w = succProb[i];
+            adj[u].push_back({v,w});
+            adj[v].push_back({u,w});
+        }
+        priority_queue<pair<double,int>> maxH;
+        vector<double> store(n,0);
+        store[start_node] = 1.0;
+        maxH.push({1,start_node}); // format of storing in maxH will be prob and node . prob to self node will be 1
+        while(!maxH.empty()){
+            double p = maxH.top().first; // prob used to reach till this node q
+            int q = maxH.top().second; // currently at node q
+            maxH.pop();
+            for(auto &e : adj[q]){
+                if((p * e.second) > store[e.first]){
+                    store[e.first] = (p * e.second);
+                    maxH.push({store[e.first],e.first});
+                }
+            }
+        }
+        return store[end_node];
+    }
+};
