@@ -1,25 +1,23 @@
-bool isValid(int ind, int color, bool graph[101][101], int n, vector<int>& cols){
-        for(int i = 0;i<n;i++){
-            if(graph[ind][i] == 1 && cols[i] == color) return false;
+bool isValid(int ind, int color, vector<int>& colors, bool graph[101][101], int n){
+        for(int i = 0;i<n;i++){ // looping for all nodes that are connnected to our current concerned node
+            if(graph[ind][i] == 1){ // there is a connection between ind node and ith node
+                if(colors[i] == color) return false; // the node (ith) that has connection with ind node has already been colored with same color
+            }
         }
         return true;
     }
-    
-    bool logic(bool graph[101][101], int m, int n, int ind, vector<int>& cols){
-        if(ind == n){
-            return true;
-        }
-        bool a = false;
-        for(int i = 0;i<m;i++){
-            if(isValid(ind,i,graph,n,cols)){
-                cols[ind] = i;
-                if(logic(graph,m,n,ind+1,cols)) return true;
-                cols[ind] = -1;
+    bool logic(bool graph[101][101], int m, int n, vector<int>& colors, int ind){
+        if(ind == n) return true; // if in any case we could reach after last index that means we have succuesfuly coloured n nodes 
+        for(int i = 0;i<m;i++){ // looping for all colour combinations possible
+            if(isValid(ind,i,colors,graph,n)){ // checking if that particular color in this index is possible or not
+                colors[ind] = i;
+                if(logic(graph,m,n,colors,ind+1)) return true; // check for further indices
+                colors[ind] = -1;
             }
         }
         return false;
     }
     bool graphColoring(bool graph[101][101], int m, int n) {
-        vector<int> col(n,-1);
-        return logic(graph,m,n,0,col);
+        vector<int> colors(n,-1); // initally all nodes coloures to -1 color
+        return logic(graph,m,n,colors,0);
     }
