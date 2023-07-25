@@ -1,0 +1,42 @@
+long long ans = 0;
+    void merge(long long arr[], int l, int m, int r)
+    {
+        vector<long long> temp;
+        int i = l;
+        int j = m+1;
+        while(i<=m && j<=r){
+            if(arr[i] > arr[j]){
+                ans += m-i+1; // inversion can be seen as no of swaps (whenever right side value is smaller) to bring it to left side index i 
+                temp.push_back(arr[j]);
+                j++;
+            }
+            else{
+                temp.push_back(arr[i]);
+                i++;
+            }
+        }
+        while(i<=m){
+            temp.push_back(arr[i]);
+            i++;
+        }
+        while(j<=r){
+            temp.push_back(arr[j]);
+            j++;
+        }
+        int p = 0;
+        for(int k = l;k<=r;k++) arr[k] = temp[p++];
+        // return ans;
+    }
+    void mergeSort(long long arr[], int l, int r)
+    {
+        if(l>=r) return;
+        int mid = (l + r)/2;
+        mergeSort(arr,l,mid);
+        mergeSort(arr,mid+1,r);
+        merge(arr,l,mid,r);
+    }
+    long long int inversionCount(long long arr[], long long N)
+    {
+        mergeSort(arr,0,N-1);
+        return ans;
+    }
