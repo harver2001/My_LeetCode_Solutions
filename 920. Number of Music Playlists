@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int numMusicPlaylists(int n, int goal, int k) {
+        vector<vector<long long>> dp(goal+1,vector<long long>(n+1,0));
+        dp[0][0] = 1; // only one way i.e empty playlist
+        long long mod = 1e9+7;
+        for(int i = 1;i<=goal;i++){ // i represents total songs in our playlist
+            for(int j = 1;j<=min(i,n);j++){ // j here represents number of unique songs used in our playlist
+                dp[i][j] = (dp[i-1][j-1]*(n-(j-1))) % mod; // since we are moving from j-1 unique songs and adding one more unique song to our playlist we'll have j unique songs and we can acheive this by n-(j-1) ways since we are left with n-(j-1) unique numbers , count will increase from i-1 to i
+                if(j>k){ // we are adding some old songs but as per condition if we k turns after the last song played we can use it again and the number of old songs that we can use again are j-k else 0
+                    dp[i][j] = (dp[i][j] + dp[i-1][j]*(j-k)) % mod; // dp[i-1][j] here only j is used beacuse we know that we are using a already previously used song so the number of unique songs will remain the same and count only will increase from i-1 to i
+                } 
+            }
+        }
+        return dp[goal][n]; // at last we want to have a total of goal number of songs and only n unique songs
+    }
+};
