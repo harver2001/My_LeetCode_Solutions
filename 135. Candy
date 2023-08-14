@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int candy(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> left(n,1);
+        vector<int> right(n,1);
+        // traversing from left to right , left side ki minimum conditions ka check rkh rha h ye loop
+        for(int i = 1;i<n;i++){
+            if(nums[i] > nums[i-1]){
+                left[i] = left[i-1] + 1;
+            }
+        }
+        // traversing from right to left , right side ki minimum conditions ka check rkh rha h ye loop
+        for(int i = n-2;i>=0;i--){
+            if(nums[i] > nums[i+1]){
+                right[i] = right[i+1] + 1;
+            }
+        }
+        // hum dono side se isliye chala rhe h loop kyuki hamko dono side ki minimum requirements ko pura krna h isliye dono ka max lena h taaki dono side ki conditions satisfy ho ske
+        int ans = 0;
+        for(int i = 0;i<n;i++){
+            left[i] = max(left[i],right[i]);
+            ans += left[i];
+        }
+        return ans;
+    }
+};
