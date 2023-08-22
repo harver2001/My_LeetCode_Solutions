@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int logic(int n){
+        if(n == 0) return 0;
+        if((n & (n-1)) == 0) return 1;
+        if(n < 0) return 1e6;
+        int down = log2(n);
+        int up = down + 1;
+        int a = 1+logic(n-pow(2,down));        
+        int b = 1+logic(pow(2,up)-n);
+        return min(a,b);
+    }
+    int minOperations(int n) {
+        return logic(n);
+    }
+};
