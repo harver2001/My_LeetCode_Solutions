@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int numTeams(vector<int>& rating) {
+        int n = rating.size();
+        map<int,vector<int>> high;
+        map<int,vector<int>> low;
+        for(int i = 0;i<n;i++){
+            for(int j = i+1;j<n;j++){
+                if(rating[i] < rating[j]) high[rating[i]].push_back(rating[j]);
+                else low[rating[i]].push_back(rating[j]);
+            }
+        }
+        int ans = 0;
+        for(int i = 0;i<n;i++){
+            for(int j = i+1;j<n;j++){
+                if(rating[i] < rating[j]){
+                    ans += high[rating[j]].size();
+                }
+                else{
+                    ans += low[rating[j]].size();
+                }
+            }
+        }
+        return ans;
+    }
+};
