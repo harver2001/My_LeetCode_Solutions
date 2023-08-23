@@ -1,0 +1,30 @@
+class Solution {
+public:
+    string reorganizeString(string s) {
+        int n = s.size();
+        string ans = s;
+        map<char,int> mp;
+        for(auto ch : s) mp[ch]++;
+        vector<pair<int,char>> v;
+        for(auto i : mp) v.push_back({i.second,i.first});
+        sort(v.rbegin(),v.rend());
+        if(v[0].first > ((n+1)/2)) return "";
+        int i = 0;
+        int j = 0;
+        // firstly we fill only even indexes with elements sorted decreasingly based on frequency
+        while(j<n){
+            ans[j] = v[i].second;
+            v[i].first--;
+            if(v[i].first == 0) i++; 
+            j += 2;
+        }
+        j = 1;
+        while(j<n){
+            ans[j] = v[i].second;
+            v[i].first--;
+            if(v[i].first == 0) i++; 
+            j += 2;
+        }
+        return ans;
+    }
+};
