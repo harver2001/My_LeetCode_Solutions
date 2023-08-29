@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int shortestSubarray(vector<int>& nums, int target) {
+        int ans = INT_MAX;
+        int n = nums.size();
+        long long prefixSum = 0;
+        deque<pair<long long,int>> dq;
+        dq.push_back({0,-1});
+        for(int i = 0;i<n;i++){
+            prefixSum += nums[i];
+            while(!dq.empty() && (dq.back().first >= prefixSum)) dq.pop_back();
+            long long temp = (prefixSum - target); 
+            // here we are checking if we have a prefix sum that is smaller/equal just so that the condition is satified (currPrefixSum[i]-k) >= previousPrefixSum
+            while(!dq.empty() && (dq.front().first <= temp)){
+                ans = min(ans,(i - dq.front().second));
+                dq.pop_front();
+            }
+            dq.push_back({prefixSum,i});
+        }
+        if(ans == INT_MAX) return -1;
+        return ans;
+    }
+};
