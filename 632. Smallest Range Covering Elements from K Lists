@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<int> smallestRange(vector<vector<int>>& nums) {
+        int n = nums.size();
+        vector<pair<int,int>> v;
+        for(int i = 0;i<n;i++){
+            for(int j = 0;j<nums[i].size();j++){
+                v.push_back({nums[i][j],i+1});
+            }
+        }
+        sort(v.begin(),v.end());
+        int left = 0;
+        int right = INT_MAX;
+        map<int,int> mp;
+        int count = 0;
+        int j = 0;
+        for(int i = 0;i<v.size();i++){
+            mp[v[i].second]++;
+            if(mp[v[i].second] == 1) count++;
+            while(count == n){
+                if((right - left) > (v[i].first - v[j].first)){
+                    right = v[i].first;
+                    left = v[j].first;
+                }
+                if(mp[v[j].second] > 1){
+                    mp[v[j].second]--;
+                    j++;
+                }
+                else break;
+            }
+        }
+        return {left,right};
+    }
+};
+// we are always making sure that our window has atleat 1 the occurence of every list, then if we get all occurence of every list we check if the left most list is again visited within the window later or not, if yes then we can remove it from left and keep moving forward to get our minimum answer of window range
