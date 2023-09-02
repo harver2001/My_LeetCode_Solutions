@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int minExtraChar(string s, vector<string>& d) {
+        int n = s.size();
+        vector<int> dp(n+1,n);
+        dp[0] = 0; // 0 charachters for empty string
+        for(int i = 0;i<n;i++){
+            for(auto p : d){
+                if(s.substr(i,p.size()) == p) dp[i + p.size()] = min(dp[i+p.size()],dp[i]);
+            }
+            dp[i+1] = min(dp[i+1],dp[i]+1);
+        }
+        return dp[n];
+    };
+};
