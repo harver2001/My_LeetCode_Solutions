@@ -1,0 +1,43 @@
+class Solution {
+public:
+    bool checker(vector<vector<char>>& board, int r, int c, int val, int n){
+        for(int i = 0;i<n;i++){
+            if(board[r][i] == val+48) return false;
+            if(board[i][c] == val+48) return false;
+        }
+        int box_row = r - r%3;
+        int box_col = c - c%3;
+        for(int i = box_row;i<box_row+3;i++){
+            for(int j = box_col;j<box_col+3;j++){
+                if(board[i][j] == val+48) return false;
+            }
+        }
+        return true;
+    }
+    bool solver(vector<vector<char>>& board, int n){
+        int flag = 0;
+        int i,j;
+        for(i = 0;i<n;i++){
+            for(j = 0;j<n;j++){
+                if(board[i][j] == '.'){
+                    flag = 1;
+                    break;
+                }
+            }
+            if(flag) break;
+        }
+        if(i == n && j == n) return true;
+        for(int val = 1;val <= n; val++){
+            if(checker(board,i,j,val,n)){
+                board[i][j] = val+48;
+                if(solver(board,n)) return true;
+                board[i][j] = '.';
+            }
+        }
+        return false;
+    }
+    void solveSudoku(vector<vector<char>>& board) {
+        int n = board.size();
+        bool hold = solver(board,n);
+    }
+};
