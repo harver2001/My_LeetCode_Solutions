@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int subarraysDivByK(vector<int>& nums, int k) {
+        int n = nums.size();
+        int sum = 0;
+        map<int,int> mp;
+        mp[0] = 1;
+        int ans = 0;
+        for(int i = 0;i<n;i++){
+            sum = (sum + (nums[i]%k) + k) % k; // we are storing all the mods of previous prefix sums and checking if we currently require it, if yes then how many times can we aquire it
+            ans += mp[sum];
+            mp[sum]++;
+        }
+        return ans;
+    }
+};
