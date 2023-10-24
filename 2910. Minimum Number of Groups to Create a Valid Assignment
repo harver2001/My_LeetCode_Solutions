@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int ans = INT_MAX;
+    void logic(map<int,int>& mp, int val){
+        int a = val, b = val+1;
+        int count = 0;
+        int flag = 0;
+        for(auto i : mp){
+            int q = i.second;
+            if(q == a || q == b){
+                count++;
+                continue;
+            }
+            int x = q/b;
+            int y = q%b;
+            if(y == 0){
+                count += x;
+                continue;
+            }
+            int z = (a - y); // extra elements required to atleast fill the quota of a or b elements in a single group
+            if(z > x){ // agar extra elements bache h to check kro ki unme har groups(x) se ek ek elements nikal ke uss chote group ko minimum a size ka la skte h kya
+                flag = 1;
+                break;
+            }
+            count += (x+1);
+        }
+        if(!flag){
+            ans = min(ans,count);
+        }
+    }
+    int minGroupsForValidAssignment(vector<int>& nums) {
+        int n = nums.size();
+        map<int,int> mp;
+        for(auto i : nums) mp[i]++;
+        if(mp.size() == 1) return 1;
+        int mini = INT_MAX;
+        for(auto p : mp) mini = min(mini,p.second);
+        int s = 1;
+        while(s<=mini){
+            logic(mp,s);
+            s++;
+        }
+        return ans;
+    }
+};
