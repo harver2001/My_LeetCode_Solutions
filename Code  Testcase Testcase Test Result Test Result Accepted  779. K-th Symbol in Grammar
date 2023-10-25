@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int kthGrammar(int n, int k) {
+        long long int l = 1;
+        long long int r = (1<<n);
+        string s = "01";
+        // n = 3 ka example --->  0110 , iska second half hamesha reverse hojaarha h, conclusion : 2nd half me hamesha inversion hote rhenge kisi bhi 01 pattern ke
+        while(l < r){
+            long long int mid = l + (r-l)/2;
+            if(k <= mid){
+                r = mid;
+            }
+            else{
+                l = mid+1;
+                reverse(s.begin(),s.end());
+            }
+        }
+        if(k&1 == 0) return s[1] - '0';
+        return s[0] - '0';
+    }
+};
