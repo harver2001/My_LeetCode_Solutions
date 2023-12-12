@@ -1,0 +1,19 @@
+class Solution {
+public:
+    bool logic(int a, int b, int t, int c, map<int,int>& dp){
+        if(t < 0 || t > (a+b) || dp.count(t)) return false;
+        if(t == c) return true;
+        dp[t] = 1;
+        bool p = logic(a,b,t+a,c,dp);
+        bool q = logic(a,b,t-a,c,dp);
+        bool r = logic(a,b,t+b,c,dp);
+        bool s = logic(a,b,t-b,c,dp);
+        return p | q | r | s;
+    }
+    bool canMeasureWater(int a, int b, int c) {
+        if(a + b == c || a == c || b == c) return true;
+        if(a + b < c) return false;
+        map<int,int> dp;
+        return logic(a,b,0,c,dp);
+    }
+};
