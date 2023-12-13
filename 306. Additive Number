@@ -1,0 +1,30 @@
+class Solution {
+public:
+    bool logic(string a, string b, string rem){
+        if(a[0] == '0' && a.size() > 1) return false;
+        if(b[0] == '0' && b.size() > 1) return false;
+        long long sum = stol(a)+stol(b);
+        string s = to_string(sum);
+        if(rem.size() < s.size()) return false;
+        if(rem == s) return true;
+        if(rem.substr(0,s.size()) != s) return false;
+        return logic(b,s,rem.substr(s.size()));        
+    }
+    bool isAdditiveNumber(string num) {
+        int n = num.size();
+        if(n < 3) return false;
+        bool ans = false;
+        for(int i = 0;i<n;i++){
+            int k = 0;
+            for(int j = i+1;j<n;j++){
+                k++;
+                string a = num.substr(0,i+1);
+                string b = num.substr(i+1,k);
+                ans = logic(a,b,num.substr(j+1));
+                cout<<a<<" "<<b<<" "<<ans<<endl;
+                if(ans) return true;
+            }
+        }
+        return false;
+    }
+};
