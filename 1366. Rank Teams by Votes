@@ -1,0 +1,32 @@
+class Solution {
+public:
+    string rankTeams(vector<string>& votes) {
+        int n = votes.size();
+        int s = votes[0].size();
+        vector<vector<long long>> adj(26, vector<long long>(s, 0));
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < s; j++) {
+                adj[votes[i][j] - 'A'][j]++;
+            }
+        }
+
+        vector<pair<vector<long long>, char>> p;
+
+        for (int i = 0; i < 26; i++) {
+            p.push_back({ adj[i], 'A' + i });
+        }
+
+        sort(p.begin(), p.end(), [](pair<vector<long long>, char>& a, pair<vector<long long>, char>& b) {
+            if(a.first == b.first) return a.second < b.second;
+            return a.first > b.first;
+        });
+
+        string ans = "";
+        for (int i = 0; i < s; i++) {
+            ans += p[i].second;
+        }
+
+        return ans;
+    }
+};
