@@ -1,0 +1,29 @@
+class Solution {
+public:
+    void logic(vector<int>& lps, string s){ // finds similar string based on prefix suffix matching
+        int n = s.size();
+        int i = 0, j = 1;
+        while(j<n){
+            if(s[i] == s[j]){
+                i++;
+                lps[j] = i;
+                j++;
+            }
+            else{
+                if(i == 0) j++;
+                else i = lps[i-1];
+            }
+        }
+    }
+    string shortestPalindrome(string s) {
+        string temp = s;
+        reverse(temp.begin(),temp.end());
+        temp = s + '#' + temp;
+        vector<int> lps(temp.size(),0);
+        logic(lps,temp);
+        int i = lps[lps.size()-1];
+        string p = s.substr(i);
+        reverse(p.begin(),p.end());
+        return p+s;
+    }
+};
