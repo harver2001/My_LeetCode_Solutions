@@ -1,0 +1,19 @@
+class Solution {
+public:
+    long long wonderfulSubstrings(string word) {
+        long long ans = 0;
+        map<long long,long long> mp;
+        long long x = 0;
+        // mujhe sirf xor me 0 se matlab h, agar bina kuch kre kahi 0 mile to answer me directly add krdo nhi to agar hume atmost one wala case dekhna h to usme har charachter ek ek baar daalke dekh lo ki 0 kaha bana rha h aur kitni baar ban rha h for usko answer me daaldo
+        mp[0] = 1;
+        for(int i = 0;i<word.size();i++){
+            x ^= 1<<(word[i] - 'a');
+            ans += mp[x];
+            for(int j = 0;j<10;j++){
+                ans += mp[x ^ (1<<j)];
+            }
+            mp[x]++;
+        }
+        return ans;
+    }
+};
