@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int findNthDigit(int n) {
+        int i = 1;
+        while(n > 9*i*pow(10,i-1)){
+            n -= 9*i*pow(10,i-1);      
+            i++;
+        }
+        int num = pow(10,i-1);
+        num += (n-1)/i; // (n-1) is taken because we have already taken 1 number in consideration when we take pow(10,i-1) since it is starting from first next digit number , take example of 9 which is last 1 digit number and suppose we have to find n = 15 which is 6 steps apart from 9 but it is 5 steps far from 10(the first next digit number from 9).
+        int ind = (n-1)%i;
+        string temp = to_string(num);
+        return temp[ind] - '0';
+    }
+};
