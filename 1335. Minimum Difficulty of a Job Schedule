@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int logic(vector<int>& arr, int d, int ind, vector<vector<int>>& dp){
+        int n = arr.size();
+        if(d < 0) return 1e9;
+        if(ind == n) return 1e9;
+        if(d == 0){
+            int m = 0;
+            for(int i = ind;i<n;i++) m = max(m,arr[i]);
+            return m;
+        }
+        if(dp[ind][d] != -1) return dp[ind][d];
+        int maxim = arr[ind];
+        int val = 1e9;
+        for(int i = ind;i<n;i++){
+            maxim = max(maxim, arr[i]);
+            int p = maxim + logic(arr,d-1,i+1,dp);
+            val = min(val,p);
+        }
+        return dp[ind][d] = val;
+    }
+    int minDifficulty(vector<int>& arr, int d) {
+        vector<vector<int>> dp(301,vector<int>(11,-1));
+        int ans = logic(arr,d-1,0,dp);
+        return ans == 1e9 ? -1 : ans;
+    }
+};
