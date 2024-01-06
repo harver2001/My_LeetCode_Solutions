@@ -1,0 +1,53 @@
+class Solution {
+public:
+    int logic(int ind, vector<int>& startTime, vector<int>& endTime, vector<int>& profit, vector<int>& dp){
+        int n = startTime.size();
+        if(ind == n){
+            return 0;
+        }
+        if(dp[ind] != -1) return dp[ind];
+        int np = logic(ind+1,startTime,endTime,profit,dp);
+        int it = lower_bound(startTime.begin(),startTime.end(),endTime[ind]) - startTime.begin();
+        int p = profit[ind]+ logic(it,startTime,endTime,profit,dp);
+        return dp[ind] = max(p,np);
+    }
+    int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
+        vector<pair<pair<int,int>,int>> v;
+        for(int i = 0;i<startTime.size();i++){
+            v.push_back({{startTime[i],endTime[i]},profit[i]});
+        }
+        sort(v.begin(),v.end());
+        for(int i = 0;i<startTime.size();i++){
+            startTime[i] = v[i].first.first;
+            endTime[i] = v[i].first.second;
+            profit[i] = v[i].second;
+        }
+        vector<int> dp(startTime.size()+1,-1);
+        return logic(0,startTime,endTime,profit,dp);
+    }
+};
+
+
+// class Solution {
+// public:
+//     int logic(int ind, vector<pair<pair<int,int>,int>>& v, vector<int>& dp){
+//         int n = startTime.size();
+//         if(ind == n){
+//             return 0;
+//         }
+//         if(dp[ind] != -1) return dp[ind];
+//         int np = logic(ind+1,v,dp);
+//         int it = lower_bound(v.begin(),v.end(),v[ind].) - v.begin();
+//         int p = profit[ind]+ logic(it,v,dp);
+//         return dp[ind] = max(p,np);
+//     }
+//     int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
+        // vector<pair<pair<int,int>,int>> v;
+        // for(int i = 0;i<startTime.size();i++){
+        //     v.push_back({{startTime[i],endTime[i]},profit[i]});
+        // }
+        // sort(v.begin(),v.end());
+//         vector<int> dp(startTime.size()+1,-1);
+//         return logic(0,v,dp);
+//     }
+// };
