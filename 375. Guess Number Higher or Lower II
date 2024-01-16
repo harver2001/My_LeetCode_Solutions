@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int dp[210][210];
+    int logic(int start, int end){
+        if(start >= end) return 0;
+        if(dp[start][end] != -1) return dp[start][end];
+        int ans = 1e8;
+        for(int i = start;i<=end;i++) ans = min(ans,i+max(logic(start,i-1),logic(i+1,end))); // max isliye liya h kyuki hum worst cases pe hi jaarhe h matlab ki har baar ham jo bhi number choose kr rhe h wo galat hi h aur last me jakar hi hume sahi nuimber mil rha h har baar, aur bahar min isliye kyuki har ek sequence of number ko choose krne k worst cases sabse kam wala worst case lena h 
+        return dp[start][end] = ans;
+    }
+    int getMoneyAmount(int n) {
+        memset(dp,-1,sizeof(dp));
+        return logic(1,n);
+    }
+};
