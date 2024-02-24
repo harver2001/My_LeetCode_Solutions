@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int longestValidSubstring(string word, vector<string>& forbidden) {
+        int n = word.size();
+        int i = n-1, j = n-1;
+        unordered_map<string,int> mp;
+        int ans = 0;
+        for(auto i : forbidden) mp[i] = 1;
+        while(i >= 0){
+            for(int k = 1;i+k-1<=j && k<=10;k++){
+                string temp = word.substr(i,k);
+                if(mp.count(temp)){
+                    j = i+k-2;
+                }
+            }
+            ans = max(ans,j - i + 1);
+            i--;
+        }
+        return ans;
+    }
+};
