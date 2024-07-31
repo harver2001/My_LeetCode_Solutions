@@ -1,0 +1,23 @@
+class Solution {
+public:
+int dp[1001];
+    int logic(vector<vector<int>>& books, int ind, int w){
+        int n = books.size();
+        if(ind == n) return 0;
+        if(dp[ind] != -1) return dp[ind];
+        int maxHeight = 0;
+        int ans = INT_MAX;
+        int temp = 0;
+        for(int i = ind;i<n;i++){
+            if(temp + books[i][0] > w) break;
+            temp += books[i][0];
+            maxHeight = max(maxHeight, books[i][1]) ;
+            ans = min(ans, maxHeight +logic(books,i+1,w));
+        }
+        return dp[ind] = ans;
+    }
+    int minHeightShelves(vector<vector<int>>& books, int w) {
+        memset(dp,-1,sizeof(dp));
+       return logic(books,0,w);
+    }
+};
