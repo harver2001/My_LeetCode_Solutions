@@ -1,0 +1,24 @@
+bool dfs(int node, unordered_map<int, vector<int>>& adj, vector<int>& vis, vector<int>& order) {
+        vis[node] = 1; // Mark the node as visiting
+        for (auto neighbor : adj[node]) {
+            if (vis[neighbor] == 1) return false; // Cycle detected
+            if (vis[neighbor] == 0) {
+                if (!dfs(neighbor, adj, vis, order)) return false;
+            }
+        }
+        vis[node] = 2; // Mark the node as visited
+        order.push_back(node);
+        return true;
+    }
+
+    vector<int> topologicalSort(int k, unordered_map<int, vector<int>>& adj) {
+        vector<int> order;
+        vector<int> vis(k + 1, 0); // 0: unvisited, 1: visiting, 2: visited
+        for (int i = 1; i <= k; ++i) {
+            if (vis[i] == 0) {
+                if (!dfs(i, adj, vis, order)) return {}; // Return empty if cycle detected
+            }
+        }
+        reverse(order.begin(), order.end());
+        return order;
+    }
