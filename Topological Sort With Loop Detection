@@ -1,5 +1,5 @@
 bool dfs(int node, unordered_map<int, vector<int>>& adj, vector<int>& vis, vector<int>& order) {
-        vis[node] = 1; // Mark the node as visiting
+        vis[node] = 1; // Mark the node as visiting -- Once came to this node and yet came again on it so there must be a cycle definitely
         for (auto neighbor : adj[node]) {
             if (vis[neighbor] == 1) return false; // Cycle detected
             if (vis[neighbor] == 0) {
