@@ -6,7 +6,7 @@ bool dfs(int node, unordered_map<int, vector<int>>& adj, vector<int>& vis, vecto
                 if (!dfs(neighbor, adj, vis, order)) return false;
             }
         }
-        vis[node] = 2; // Mark the node as visited
+        vis[node] = 2; // Mark the node as visited -- No need to check this and all its connected later nodes as we already checked it before and no loop was found
         order.push_back(node);
         return true;
     }
